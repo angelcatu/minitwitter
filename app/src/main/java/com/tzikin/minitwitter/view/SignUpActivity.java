@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tzikin.minitwitter.R;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.response.LoginSignUpResponse;
+import com.tzikin.minitwitter.view.viewmodel.repository.repositories.LoginSignUpRepository;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,12 +47,30 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         int id = v.getId();
         switch (id){
             case R.id.btnRegister:
+                doSignUp();
                 break;
 
             case R.id.txtLogIn:
                 goToLogIn();
                 break;
         }
+    }
+
+    private void doSignUp() {
+        String username = etUsername.getText().toString();
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+
+        LoginSignUpRepository repository = new LoginSignUpRepository();
+        repository.doSignUpRequest(email, username, password);
+        repository.getSingUpResponse().observe(this, response -> {
+            if(response != null){
+                startActivity(new Intent(this, Dashboard.class));
+                finish();
+            }else{
+                Toast.makeText(this, getString(R.string.notConnection), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void goToLogIn() {

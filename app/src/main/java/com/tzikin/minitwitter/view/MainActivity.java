@@ -64,7 +64,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         repository.doLoginRequest(email, password);
         repository.getLoginSignUpResponse().observe(this, response -> {
             if(response != null){
-                Toast.makeText(this, "Sesión exitosa", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this, Dashboard.class));
+                finish();
+            }else{
+                Toast.makeText(this, getString(R.string.notConnection), Toast.LENGTH_SHORT).show();
             }
         });
     }
