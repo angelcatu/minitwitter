@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tzikin.minitwitter.R;
+import com.tzikin.minitwitter.view.common.Constants;
+import com.tzikin.minitwitter.view.common.SharedPreferenceManager;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.response.LoginSignUpResponse;
 import com.tzikin.minitwitter.view.viewmodel.repository.repositories.LoginSignUpRepository;
 
@@ -64,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         repository.doLoginRequest(email, password);
         repository.getLoginSignUpResponse().observe(this, response -> {
             if(response != null){
+                SharedPreferenceManager.setSomeStringValue(Constants.PREF_TOKEN, response.getToken());
+                SharedPreferenceManager.setSomeStringValue(Constants.PREF_USERNAME, response.getUsername());
+                SharedPreferenceManager.setSomeStringValue(Constants.PREF_PHOTO_URL, response.getPhotoUrl());
+                SharedPreferenceManager.setSomeStringValue(Constants.PREF_CREATED, response.getCreated());
+                SharedPreferenceManager.setSomeStringValue(Constants.PREF_ACTIVE, response.getActive());
                 startActivity(new Intent(this, Dashboard.class));
                 finish();
             }else{
