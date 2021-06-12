@@ -10,7 +10,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.tzikin.minitwitter.view.databinding.ActivityDashboardBinding;
+import com.tzikin.minitwitter.R;
+import com.tzikin.minitwitter.databinding.ActivityDashboardBinding;
+
 
 public class Dashboard extends AppCompatActivity {
 

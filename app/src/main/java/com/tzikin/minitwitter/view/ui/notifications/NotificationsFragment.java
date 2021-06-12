@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.tzikin.minitwitter.view.R;
-import com.tzikin.minitwitter.view.databinding.FragmentNotificationsBinding;
+import com.tzikin.minitwitter.databinding.FragmentNotificationsBinding;
+
 
 public class NotificationsFragment extends Fragment {
 

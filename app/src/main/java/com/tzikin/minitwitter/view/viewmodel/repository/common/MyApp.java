@@ -14,4 +14,10 @@ public class MyApp extends Application {
     public static Context getContext() {
         return instance;
     }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+    }
 }

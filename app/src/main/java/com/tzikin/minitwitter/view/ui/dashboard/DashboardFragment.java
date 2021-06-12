@@ -12,8 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.tzikin.minitwitter.view.R;
-import com.tzikin.minitwitter.view.databinding.FragmentDashboardBinding;
+import com.tzikin.minitwitter.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment {
 
