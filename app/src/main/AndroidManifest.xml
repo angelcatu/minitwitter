@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MiniTwitter">
         <activity
             android:name=".view.Dashboard"
-            android:label="@string/title_activity_dashboard"></activity>
+            android:label="@string/title_activity_dashboard"/>
         <activity android:name=".view.viewmodel.Example" />
         <activity
             android:name=".view.SignUpActivity"
