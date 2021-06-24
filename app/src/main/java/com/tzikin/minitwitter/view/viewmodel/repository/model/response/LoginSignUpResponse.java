@@ -23,7 +23,7 @@ public class LoginSignUpResponse {
 
     @SerializedName("active")
     @Expose
-    private String active;
+    private boolean active;
 
     public String getToken() {
         return token;
@@ -57,11 +57,11 @@ public class LoginSignUpResponse {
         this.created = created;
     }
 
-    public String getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(String active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 }

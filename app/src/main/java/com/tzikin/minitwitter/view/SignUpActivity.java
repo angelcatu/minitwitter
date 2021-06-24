@@ -70,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 SharedPreferenceManager.setSomeStringValue(Constants.PREF_USERNAME, response.getUsername());
                 SharedPreferenceManager.setSomeStringValue(Constants.PREF_PHOTO_URL, response.getPhotoUrl());
                 SharedPreferenceManager.setSomeStringValue(Constants.PREF_CREATED, response.getCreated());
-                SharedPreferenceManager.setSomeStringValue(Constants.PREF_ACTIVE, response.getActive());
+                SharedPreferenceManager.setSomeBooleanValue(Constants.PREF_ACTIVE, response.getActive());
                 startActivity(new Intent(this, Dashboard.class));
                 finish();
             }else{
