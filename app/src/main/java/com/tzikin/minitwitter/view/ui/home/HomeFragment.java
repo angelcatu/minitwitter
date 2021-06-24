@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 
+import com.tzikin.minitwitter.R;
 import com.tzikin.minitwitter.databinding.FragmentHomeBinding;
 
 import com.tzikin.minitwitter.view.ui.home.adapter.TweetAdapterJ;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
@@ -50,6 +51,8 @@ public class HomeFragment extends Fragment {
         binding.recyclerTweet.setHasFixedSize(true);
         binding.recyclerTweet.setAdapter(tweetAdapter);
 
+        binding.fabNewTweet.setOnClickListener(this);
+
         loadData();
     }
 
@@ -65,5 +68,16 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.fabNewTweet:
+                NewTweetDialogFragment dialogTweet = new NewTweetDialogFragment();
+                dialogTweet.show(requireActivity().getSupportFragmentManager(),"NewTweetDialogFragment");
+                break;
+        }
     }
 }
