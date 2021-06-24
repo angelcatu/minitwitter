@@ -11,25 +11,27 @@ class User {
 
     @SerializedName("id")
     @Expose
-    private val id: Int? = null
+    val id: Int? = null
 
     @SerializedName("username")
     @Expose
-    private val username: String? = null
+    val username: String? = null
 
     @SerializedName("descripcion")
     @Expose
-    private val descripcion: String? = null
+    val descripcion: String? = null
 
     @SerializedName("website")
     @Expose
-    private val website: String? = null
+    val website: String? = null
 
     @SerializedName("photoUrl")
     @Expose
-    private val photoUrl: String? = null
+    val photoUrl: String? = null
 
     @SerializedName("created")
     @Expose
-    private val created: String? = null
+    val created: String? = null
+
+
 }

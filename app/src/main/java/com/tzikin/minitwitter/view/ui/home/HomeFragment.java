@@ -4,37 +4,63 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 
 import com.tzikin.minitwitter.databinding.FragmentHomeBinding;
-import com.tzikin.minitwitter.view.viewmodel.repository.model.Tweet;
+
+import com.tzikin.minitwitter.view.ui.home.adapter.TweetAdapterJ;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
+import com.tzikin.minitwitter.view.viewmodel.repository.repositories.TweetRepository;
+
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
-    private RecyclerView tweetsRecycler;
     private List<Tweet> tweetList;
+    private TweetAdapterJ tweetAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        return binding.getRoot();
+    }
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), s -> textView.setText(s));
-        return root;
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        bindElements();
+    }
+
+    private void bindElements() {
+        tweetList = getTweetList();
+        tweetAdapter = new TweetAdapterJ(requireActivity(), tweetList);
+        binding.recyclerTweet.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        binding.recyclerTweet.setHasFixedSize(true);
+        binding.recyclerTweet.setAdapter(tweetAdapter);
+    }
+
+    private List<Tweet> getTweetList() {
+
+        TweetRepository repository = new TweetRepository();
+        repository.getAllTweets();
+        repository.getAllTweetsResponse().observe(requireActivity(), response -> {
+            if(response != null){
+                homeViewModel.getAllTweets().setValue(response);
+            }
+        });
+        return homeViewModel.getAllTweets().getValue();
     }
 
     @Override

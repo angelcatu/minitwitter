@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.LoginRequest;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.SignUpRequest;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.response.LoginSignUpResponse;
+import com.tzikin.minitwitter.view.viewmodel.repository.retrofit.MiniTwitterClient;
 import com.tzikin.minitwitter.view.viewmodel.repository.retrofit.api.LoginRegisterApi;
-import com.tzikin.minitwitter.view.viewmodel.repository.retrofit.api.MiniTwitterClient;
+
 
 public class LoginSignUpRepository {
 

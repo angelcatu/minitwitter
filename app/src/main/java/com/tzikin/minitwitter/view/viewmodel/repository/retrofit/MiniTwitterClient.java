@@ -1,10 +1,11 @@
-package com.tzikin.minitwitter.view.viewmodel.repository.retrofit.api;
+package com.tzikin.minitwitter.view.viewmodel.repository.retrofit;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.LoginRequest;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.SignUpRequest;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.response.LoginSignUpResponse;
+import com.tzikin.minitwitter.view.viewmodel.repository.retrofit.api.LoginRegisterApi;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,7 +14,7 @@ import retrofit2.Response;
 public class MiniTwitterClient {
 
     private static MiniTwitterClient instance = null;
-    private LoginRegisterApi api;
+    private final LoginRegisterApi api;
 
     public static MiniTwitterClient getInstance(){
         if(instance == null){
