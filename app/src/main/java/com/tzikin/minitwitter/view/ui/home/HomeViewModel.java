@@ -10,16 +10,20 @@ import java.util.List;
 
 public class HomeViewModel extends ViewModel {
 
-    private MutableLiveData<List<Tweet>> allTweets = new MutableLiveData<>();
+    private MutableLiveData<List<Tweet>> allTweets;
+    private TweetRepository tweetRepository;
+
 
     public HomeViewModel() {
+        tweetRepository = new TweetRepository();
+        allTweets = tweetRepository.getAllTweetsResponse();
     }
 
     public MutableLiveData<List<Tweet>> getAllTweets() {
         return allTweets;
     }
 
-    public void setAllTweets(MutableLiveData<List<Tweet>> allTweets) {
-        this.allTweets = allTweets;
+    public TweetRepository getTweetRepository() {
+        return tweetRepository;
     }
 }

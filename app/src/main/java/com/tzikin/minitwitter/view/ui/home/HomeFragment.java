@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -16,7 +17,6 @@ import com.tzikin.minitwitter.databinding.FragmentHomeBinding;
 
 import com.tzikin.minitwitter.view.ui.home.adapter.TweetAdapterJ;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
-import com.tzikin.minitwitter.view.viewmodel.repository.repositories.TweetRepository;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -44,23 +44,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void bindElements() {
-        tweetList = getTweetList();
+
         tweetAdapter = new TweetAdapterJ(requireActivity(), tweetList);
         binding.recyclerTweet.setLayoutManager(new LinearLayoutManager(requireActivity()));
         binding.recyclerTweet.setHasFixedSize(true);
         binding.recyclerTweet.setAdapter(tweetAdapter);
+
+        loadData();
     }
 
-    private List<Tweet> getTweetList() {
+    private void loadData() {
 
-        TweetRepository repository = new TweetRepository();
-        repository.getAllTweets();
-        repository.getAllTweetsResponse().observe(requireActivity(), response -> {
-            if(response != null){
-                homeViewModel.getAllTweets().setValue(response);
-            }
+        homeViewModel.getAllTweets().observe(requireActivity(), tweets -> {
+            tweetList = tweets;
+            tweetAdapter.setData(tweets);
         });
-        return homeViewModel.getAllTweets().getValue();
     }
 
     @Override

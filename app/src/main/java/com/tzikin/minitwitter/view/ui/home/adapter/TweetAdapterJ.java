@@ -1,5 +1,8 @@
 package com.tzikin.minitwitter.view.ui.home.adapter;
 
+import android.app.Activity;
+import android.graphics.Typeface;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -7,6 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.tzikin.minitwitter.R;
+import com.tzikin.minitwitter.databinding.TweetLayoutBinding;
+import com.tzikin.minitwitter.view.common.Constants;
+import com.tzikin.minitwitter.view.common.SharedPreferenceManager;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Like;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
 
 import org.jetbrains.annotations.NotNull;
@@ -14,29 +23,71 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder> {
+
+    private Activity activity;
+    private List<Tweet> tweetList;
+    private String username;
+
     public TweetAdapterJ(FragmentActivity requireActivity, List<Tweet> tweetList) {
+        this.activity = requireActivity;
+        this.tweetList = tweetList;
+        this.username = SharedPreferenceManager.getSomeStringValue(Constants.PREF_USERNAME);
+
+    }
+
+    public void setData(List<Tweet> newData){
+        this.tweetList = newData;
+        notifyDataSetChanged(); // Refresh
     }
 
     @NonNull
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return null;
+        TweetLayoutBinding view = TweetLayoutBinding.inflate(LayoutInflater.from(activity), parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-
+        if(tweetList != null){
+            holder.bind(tweetList.get(position), activity, username);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if(tweetList != null){
+            return tweetList.size();
+        }else{
+            return 0;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(@NonNull @NotNull View itemView) {
-            super(itemView);
+        private final TweetLayoutBinding binding;
+        public ViewHolder(TweetLayoutBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        public void bind(Tweet tweet, Activity activity, String username) {
+            binding.txtUsername.setText(tweet.getUser().getUsername());
+            binding.txtMessage.setText(tweet.getMensaje());
+            binding.txtLike.setText(String.valueOf(tweet.getLikes().size()));
+
+            if(!tweet.getUser().getPhotoUrl().isEmpty()){
+                Glide.with(activity).load(tweet.getUser().getPhotoUrl()).into(binding.imgProfile);
+            }
+
+            for (Like like: tweet.getLikes()) {
+                if(like.getUsername() == username){
+                    Glide.with(activity).load(R.drawable.ic_with_like_black).into(binding.imgLike);
+                    binding.txtLike.setTextColor(activity.getColor(R.color.pink));
+                    binding.txtLike.setTypeface(null, Typeface.BOLD);
+                }
+
+            }
         }
     }
 }
