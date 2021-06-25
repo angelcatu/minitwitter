@@ -27,11 +27,13 @@ public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder
     private Activity activity;
     private List<Tweet> tweetList;
     private String username;
+    private OnLikeListener onLike;
 
-    public TweetAdapterJ(FragmentActivity requireActivity, List<Tweet> tweetList) {
+    public TweetAdapterJ(FragmentActivity requireActivity, List<Tweet> tweetList, OnLikeListener onLike) {
         this.activity = requireActivity;
         this.tweetList = tweetList;
         this.username = SharedPreferenceManager.getSomeStringValue(Constants.PREF_USERNAME);
+        this.onLike = onLike;
 
     }
 
@@ -51,7 +53,7 @@ public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         if(tweetList != null){
-            holder.bind(tweetList.get(position), activity, username);
+            holder.bind(tweetList.get(position), activity, username, onLike);
         }
     }
 
@@ -71,7 +73,7 @@ public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder
             this.binding = binding;
         }
 
-        public void bind(Tweet tweet, Activity activity, String username) {
+        public void bind(Tweet tweet, Activity activity, String username, OnLikeListener onLike) {
             binding.txtUsername.setText(tweet.getUser().getUsername());
             binding.txtMessage.setText(tweet.getMensaje());
             binding.txtLike.setText(String.valueOf(tweet.getLikes().size()));
@@ -90,8 +92,15 @@ public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder
                     binding.txtLike.setTextColor(activity.getColor(R.color.pink));
                     binding.txtLike.setTypeface(null, Typeface.BOLD);
                 }
-
             }
+
+            binding.imgLike.setOnClickListener(v -> {
+                onLike.onLikeTouchListener(tweet);
+            });
         }
+    }
+
+    public interface OnLikeListener{
+        void onLikeTouchListener(Tweet tweet);
     }
 }

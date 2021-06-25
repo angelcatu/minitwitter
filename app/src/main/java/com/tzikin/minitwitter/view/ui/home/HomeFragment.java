@@ -46,7 +46,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void bindElements() {
 
-        tweetAdapter = new TweetAdapterJ(requireActivity(), tweetList);
+        tweetAdapter = new TweetAdapterJ(requireActivity(), tweetList, tweet -> {
+            int id = tweet.getId();
+            homeViewModel.likeTweet(id);
+        });
         binding.recyclerTweet.setLayoutManager(new LinearLayoutManager(requireActivity()));
         binding.recyclerTweet.setHasFixedSize(true);
         binding.recyclerTweet.setAdapter(tweetAdapter);

@@ -59,7 +59,7 @@ public class AuthTwitterClient {
         return allTweets;
     }
 
-    public MutableLiveData<Tweet> postNewTweet(NewTweet request) {
+    public void postNewTweet(NewTweet request) {
         MutableLiveData<Tweet> routeData = new MutableLiveData<>();
         api.postMessage(request).enqueue(new Callback<Tweet>() {
             @Override
@@ -86,8 +86,39 @@ public class AuthTwitterClient {
                     routeData.setValue(null);
             }
         });
+    }
 
-        return routeData;
+    public void likeTweet(int idTweet){
+        MutableLiveData<Tweet> routeData = new MutableLiveData<>();
+        api.likeTweet(idTweet).enqueue(new Callback<Tweet>() {
+            @Override
+            public void onResponse(Call<Tweet> call, Response<Tweet> response) {
+                if(response.body() != null){
+
+                    List<Tweet> clonedList = new ArrayList<>();
+                    clonedList.add(response.body());
+
+                    for(int i = 0; i < allTweets.getValue().size(); i++){
+
+                        if(allTweets.getValue().get(i).getId() == idTweet){
+                            clonedList.add(response.body());
+                        }else{
+                            clonedList.add(new Tweet(allTweets.getValue().get(i)));
+                        }
+                    }
+
+                    allTweets.setValue(clonedList);
+
+                }else{
+                    routeData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Tweet> call, Throwable t) {
+                routeData.setValue(null);
+            }
+        });
     }
 
 }

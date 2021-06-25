@@ -22,6 +22,7 @@ public class TweetRepository {
 
     private MutableLiveData<List<Tweet>> allTweetsResponse;
     private MutableLiveData<Tweet> postNewTweet;
+    private MutableLiveData<Tweet> likeTweet;
 
     public void getAllTweets(){
         allTweetsResponse = instance.getAllTweets();
@@ -29,7 +30,11 @@ public class TweetRepository {
 
     public void postNewTweet(String message){
         NewTweet newTweet = new NewTweet(message);
-        postNewTweet = instance.postNewTweet(newTweet);
+        instance.postNewTweet(newTweet);
+    }
+
+    public void likeTweet(int idTweet){
+        instance.likeTweet(idTweet);
     }
 
     public MutableLiveData<List<Tweet>> getAllTweetsResponse() {
@@ -38,5 +43,9 @@ public class TweetRepository {
 
     public MutableLiveData<Tweet> getPostNewTweet() {
         return postNewTweet;
+    }
+
+    public MutableLiveData<Tweet> getLikeTweet() {
+        return likeTweet;
     }
 }

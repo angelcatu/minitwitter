@@ -35,4 +35,6 @@ public class HomeViewModel extends ViewModel {
     public void insertTweet(String message){
         tweetRepository.postNewTweet(message);
     }
+
+    public void likeTweet(int idTweet){tweetRepository.likeTweet(idTweet);}
 }
