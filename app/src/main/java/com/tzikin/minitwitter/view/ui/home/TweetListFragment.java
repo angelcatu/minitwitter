@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.tzikin.minitwitter.R;
 import com.tzikin.minitwitter.databinding.FragmentHomeBinding;
 
+import com.tzikin.minitwitter.view.common.Constants;
 import com.tzikin.minitwitter.view.ui.home.adapter.TweetAdapterJ;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
 
@@ -24,12 +25,31 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class TweetListFragment extends Fragment implements View.OnClickListener {
+
+    private int tweetListType = 1;
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private List<Tweet> tweetList;
     private TweetAdapterJ tweetAdapter;
+
+    public static TweetListFragment newInstance(int tweetListType){
+        TweetListFragment fragment = new TweetListFragment();
+        Bundle args = new Bundle();
+        args.putInt(Constants.TWEET_LIST_TYPE, tweetListType);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(getArguments() != null){
+            tweetListType = getArguments().getInt(Constants.TWEET_LIST_TYPE);
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);

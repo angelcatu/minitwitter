@@ -87,7 +87,7 @@ public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder
             binding.txtLike.setTypeface(null, Typeface.NORMAL);
 
             for (Like like: tweet.getLikes()) {
-                if(like.getUsername() == username){
+                if(like.getUsername().equals(username)){
                     Glide.with(activity).load(R.drawable.ic_with_like_black).into(binding.imgLike);
                     binding.txtLike.setTextColor(activity.getColor(R.color.pink));
                     binding.txtLike.setTypeface(null, Typeface.BOLD);
