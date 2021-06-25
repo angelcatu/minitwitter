@@ -22,4 +22,8 @@
     <string name="title_notifications">Notifications</string>
     <string name="newTweet">Tweet</string>
     <string name="whathappening">¿Qué está pasando?</string>
+    <string name="close_dialog_new_tweet">¿Desea cancelar el tweet? El mensaje se borrará</string>
+    <string name="cancel_new_tweet">Cancelar tweet</string>
+    <string name="eliminate">Eliminar</string>
+    <string name="cancel">Cancelar</string>
 </resources>
