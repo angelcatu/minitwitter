@@ -23,6 +23,11 @@ public class HomeViewModel extends ViewModel {
         return allTweets;
     }
 
+    public MutableLiveData<List<Tweet>> getAllNewTweets(){
+        allTweets = tweetRepository.getAllTweetsResponse();
+        return allTweets;
+    }
+
     public TweetRepository getTweetRepository() {
         return tweetRepository;
     }

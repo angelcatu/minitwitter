@@ -80,6 +80,10 @@ public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder
                 Glide.with(activity).load(tweet.getUser().getPhotoUrl()).into(binding.imgProfile);
             }
 
+            Glide.with(activity).load(R.drawable.ic_without_like).into(binding.imgLike);
+            binding.txtLike.setTextColor(activity.getColor(R.color.black));
+            binding.txtLike.setTypeface(null, Typeface.NORMAL);
+
             for (Like like: tweet.getLikes()) {
                 if(like.getUsername() == username){
                     Glide.with(activity).load(R.drawable.ic_with_like_black).into(binding.imgLike);

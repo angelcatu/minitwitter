@@ -53,14 +53,33 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         binding.fabNewTweet.setOnClickListener(this);
 
-        loadData();
+        loadTweets();
+
+        // Swipe-refresh
+        binding.swipeRefreshTweets.setColorSchemeColors(getResources().getColor(R.color.bluecolor, null));
+        binding.swipeRefreshTweets.setOnRefreshListener(() -> {
+            binding.swipeRefreshTweets.setRefreshing(true);
+            loadNewTweets();
+        });
     }
 
-    private void loadData() {
+    private void loadTweets() {
 
         homeViewModel.getAllTweets().observe(requireActivity(), tweets -> {
             tweetList = tweets;
             tweetAdapter.setData(tweets);
+        });
+    }
+
+    private void loadNewTweets(){
+        homeViewModel.getAllNewTweets().observe(requireActivity(), new Observer<List<Tweet>>() {
+            @Override
+            public void onChanged(List<Tweet> tweets) {
+                tweetList = tweets;
+                tweetAdapter.setData(tweets);
+                binding.swipeRefreshTweets.setRefreshing(false);
+                homeViewModel.getAllNewTweets().removeObserver(this);
+            }
         });
     }
 
