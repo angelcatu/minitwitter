@@ -26,4 +26,8 @@ public class HomeViewModel extends ViewModel {
     public TweetRepository getTweetRepository() {
         return tweetRepository;
     }
+
+    public void insertTweet(String message){
+        tweetRepository.postNewTweet(message);
+    }
 }
