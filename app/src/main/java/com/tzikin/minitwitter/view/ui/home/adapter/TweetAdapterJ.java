@@ -97,10 +97,16 @@ public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder
             binding.imgLike.setOnClickListener(v -> {
                 onLike.onLikeTouchListener(tweet);
             });
+
+            binding.imgShowMenu.setOnClickListener(v -> {
+                onLike.onIdTweetListener(tweet.getId());
+            });
         }
     }
 
     public interface OnLikeListener{
         void onLikeTouchListener(Tweet tweet);
+        void onIdTweetListener(int idTweet);
     }
+
 }

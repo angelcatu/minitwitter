@@ -72,10 +72,17 @@ public class TweetListFragment extends Fragment implements View.OnClickListener 
             binding.fabNewTweet.hide();
         }
 
+        tweetAdapter = new TweetAdapterJ(requireActivity(), tweetList, new TweetAdapterJ.OnLikeListener() {
+            @Override
+            public void onLikeTouchListener(Tweet tweet) {
+                int id = tweet.getId();
+                tweetViewModel.likeTweet(id);
+            }
 
-        tweetAdapter = new TweetAdapterJ(requireActivity(), tweetList, tweet -> {
-            int id = tweet.getId();
-            tweetViewModel.likeTweet(id);
+            @Override
+            public void onIdTweetListener(int idTweet) {
+                tweetViewModel.openDialogTweetMenu(requireActivity(), idTweet);
+            }
         });
         binding.recyclerTweet.setLayoutManager(new LinearLayoutManager(requireActivity()));
         binding.recyclerTweet.setHasFixedSize(true);

@@ -46,7 +46,7 @@ public class BottomModalTweetFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        tweetViewModel = new ViewModelProvider(this).get(TweetViewModel.class);
+        tweetViewModel = new ViewModelProvider(requireActivity()).get(TweetViewModel.class);
         binding = BottomModalTweetFragmentBinding.inflate(inflater, container, false);
 
         binding.navigationViewBottomTweet.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
