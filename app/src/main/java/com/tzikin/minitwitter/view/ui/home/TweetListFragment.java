@@ -29,7 +29,7 @@ public class TweetListFragment extends Fragment implements View.OnClickListener 
 
     private int tweetListType = 1;
 
-    private HomeViewModel homeViewModel;
+    private TweetViewModel tweetViewModel;
     private FragmentHomeBinding binding;
     private List<Tweet> tweetList;
     private TweetAdapterJ tweetAdapter;
@@ -52,7 +52,7 @@ public class TweetListFragment extends Fragment implements View.OnClickListener 
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        tweetViewModel = new ViewModelProvider(this).get(TweetViewModel.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -66,13 +66,26 @@ public class TweetListFragment extends Fragment implements View.OnClickListener 
 
     private void bindElements() {
 
+        if(tweetListType == Constants.TWEET_LIST_ALL){
+            binding.fabNewTweet.show();
+        }else{
+            binding.fabNewTweet.hide();
+        }
+
+
         tweetAdapter = new TweetAdapterJ(requireActivity(), tweetList, tweet -> {
             int id = tweet.getId();
-            homeViewModel.likeTweet(id);
+            tweetViewModel.likeTweet(id);
         });
         binding.recyclerTweet.setLayoutManager(new LinearLayoutManager(requireActivity()));
         binding.recyclerTweet.setHasFixedSize(true);
         binding.recyclerTweet.setAdapter(tweetAdapter);
+
+        if(tweetListType == Constants.TWEET_LIST_ALL){
+            loadTweets();
+        }else if(tweetListType == Constants.TWEET_LIST_FAVS){
+            loadFavTweetData();
+        }
 
         binding.fabNewTweet.setOnClickListener(this);
 
@@ -82,26 +95,50 @@ public class TweetListFragment extends Fragment implements View.OnClickListener 
         binding.swipeRefreshTweets.setColorSchemeColors(getResources().getColor(R.color.bluecolor, null));
         binding.swipeRefreshTweets.setOnRefreshListener(() -> {
             binding.swipeRefreshTweets.setRefreshing(true);
-            loadNewTweets();
+
+            if(tweetListType == Constants.TWEET_LIST_ALL){
+                loadNewTweets();
+            }else if(tweetListType == Constants.TWEET_LIST_FAVS){
+                loadNewFavTweetData();
+            }
+        });
+    }
+
+    private void loadNewFavTweetData() {
+        tweetViewModel.getFavNewTweets().observe(requireActivity(), new Observer<List<Tweet>>() {
+            @Override
+            public void onChanged(List<Tweet> tweets) {
+                tweetList = tweets;
+                binding.swipeRefreshTweets.setRefreshing(false);
+                tweetAdapter.setData(tweets);
+                tweetViewModel.getFavNewTweets().removeObserver(this);
+            }
+        });
+    }
+
+    private void loadFavTweetData() {
+        tweetViewModel.getFavTweets().observe(requireActivity(), tweets -> {
+            tweetList = tweets;
+            tweetAdapter.setData(tweetList);
         });
     }
 
     private void loadTweets() {
 
-        homeViewModel.getAllTweets().observe(requireActivity(), tweets -> {
+        tweetViewModel.getAllTweets().observe(requireActivity(), tweets -> {
             tweetList = tweets;
             tweetAdapter.setData(tweets);
         });
     }
 
     private void loadNewTweets(){
-        homeViewModel.getAllNewTweets().observe(requireActivity(), new Observer<List<Tweet>>() {
+        tweetViewModel.getAllNewTweets().observe(requireActivity(), new Observer<List<Tweet>>() {
             @Override
             public void onChanged(List<Tweet> tweets) {
                 tweetList = tweets;
                 tweetAdapter.setData(tweets);
                 binding.swipeRefreshTweets.setRefreshing(false);
-                homeViewModel.getAllNewTweets().removeObserver(this);
+                tweetViewModel.getAllNewTweets().removeObserver(this);
             }
         });
     }

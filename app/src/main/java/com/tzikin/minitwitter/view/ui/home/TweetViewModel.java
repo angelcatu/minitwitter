@@ -8,13 +8,14 @@ import com.tzikin.minitwitter.view.viewmodel.repository.repositories.TweetReposi
 
 import java.util.List;
 
-public class HomeViewModel extends ViewModel {
+public class TweetViewModel extends ViewModel {
 
     private MutableLiveData<List<Tweet>> allTweets;
+    private MutableLiveData<List<Tweet>> favTweets;
     private TweetRepository tweetRepository;
 
 
-    public HomeViewModel() {
+    public TweetViewModel() {
         tweetRepository = new TweetRepository();
         allTweets = tweetRepository.getAllTweetsResponse();
     }
@@ -26,6 +27,16 @@ public class HomeViewModel extends ViewModel {
     public MutableLiveData<List<Tweet>> getAllNewTweets(){
         allTweets = tweetRepository.getAllTweetsResponse();
         return allTweets;
+    }
+
+    public MutableLiveData<List<Tweet>> getFavTweets(){
+        favTweets = tweetRepository.favTweets();
+        return favTweets;
+    }
+
+    public MutableLiveData<List<Tweet>> getFavNewTweets(){
+        getFavTweets();
+        return getFavTweets();
     }
 
     public TweetRepository getTweetRepository() {

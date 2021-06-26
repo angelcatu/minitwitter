@@ -11,6 +11,16 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
+    <action>
+        <argument
+            android:name="tweetListType"
+            app:argType="int"
+            android:defaultValue="1"
+            >
+
+        </argument>
+    </action>
+
     <fragment
         android:id="@+id/navigation_tweet_like"
         android:name="com.tzikin.minitwitter.view.ui.dashboard.DashboardFragment"

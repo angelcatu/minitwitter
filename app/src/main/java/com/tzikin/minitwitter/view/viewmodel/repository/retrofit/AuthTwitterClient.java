@@ -2,11 +2,15 @@ package com.tzikin.minitwitter.view.viewmodel.repository.retrofit;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.tzikin.minitwitter.view.common.Constants;
+import com.tzikin.minitwitter.view.common.SharedPreferenceManager;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Like;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.NewTweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.retrofit.api.AuthTweetApi;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -19,6 +23,7 @@ public class AuthTwitterClient {
     private static AuthTwitterClient instance = null;
     private AuthTweetApi api;
     private MutableLiveData<List<Tweet>> allTweets;
+    private MutableLiveData<List<Tweet>> favTweets;
 
     public static AuthTwitterClient getInstance(){
         if(instance == null){
@@ -57,6 +62,36 @@ public class AuthTwitterClient {
         });
 
         return allTweets;
+    }
+
+    public MutableLiveData<List<Tweet>> getFavsTweets(){
+        if(favTweets == null){
+            favTweets = new MutableLiveData<>();
+        }
+
+        String username = SharedPreferenceManager.getSomeStringValue(Constants.PREF_USERNAME);
+
+        List<Tweet> newFavList = new ArrayList<>();
+        Iterator itTweets = allTweets.getValue().iterator();
+
+        while(itTweets.hasNext()){
+            Tweet current = (Tweet) itTweets.next();
+            Iterator itLikes = current.getLikes().iterator();
+            boolean finded = false;
+
+            while(itLikes.hasNext() && !finded){
+                Like like = (Like) itLikes.next();
+                if(like.getUsername().equals(username)){
+                    finded = true;
+                    newFavList.add(current);
+                }
+            }
+        }
+
+        favTweets.setValue(newFavList);
+
+        return favTweets;
+
     }
 
     public void postNewTweet(NewTweet request) {
@@ -108,6 +143,8 @@ public class AuthTwitterClient {
                     }
 
                     allTweets.setValue(clonedList);
+
+                    getFavsTweets();
 
                 }else{
                     routeData.setValue(null);

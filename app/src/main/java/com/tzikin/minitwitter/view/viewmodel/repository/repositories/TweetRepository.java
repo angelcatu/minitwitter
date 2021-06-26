@@ -37,6 +37,10 @@ public class TweetRepository {
         instance.likeTweet(idTweet);
     }
 
+    public MutableLiveData<List<Tweet>> favTweets(){
+        return instance.getFavsTweets();
+    }
+
     public MutableLiveData<List<Tweet>> getAllTweetsResponse() {
         return allTweetsResponse;
     }

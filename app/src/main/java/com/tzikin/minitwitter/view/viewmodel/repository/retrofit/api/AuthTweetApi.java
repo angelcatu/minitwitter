@@ -21,4 +21,7 @@ public interface AuthTweetApi {
 
     @POST("tweets/like/{id}")
     Call<Tweet> likeTweet(@Path("id") int idTweet);
+
+    @GET("tweets/favs")
+    Call<List<Tweet>> getFavTweets();
 }

@@ -17,7 +17,6 @@ import com.tzikin.minitwitter.R;
 import com.tzikin.minitwitter.databinding.NewTweetDialogBinding;
 import com.tzikin.minitwitter.view.common.Constants;
 import com.tzikin.minitwitter.view.common.SharedPreferenceManager;
-import com.tzikin.minitwitter.view.viewmodel.repository.repositories.TweetRepository;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -65,7 +64,7 @@ public class NewTweetDialogFragment extends DialogFragment implements View.OnCli
             case R.id.btnTweet:
 
                 if (!message.isEmpty()) {
-                    HomeViewModel tweetViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+                    TweetViewModel tweetViewModel = new ViewModelProvider(requireActivity()).get(TweetViewModel.class);
                     tweetViewModel.insertTweet(message);
                 } else {
                     Toast.makeText(requireActivity(), "Escribir un mensaje para publicar", Toast.LENGTH_SHORT).show();
