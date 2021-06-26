@@ -1,5 +1,8 @@
 package com.tzikin.minitwitter.view.ui.home;
 
+import android.content.Context;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -52,4 +55,9 @@ public class TweetViewModel extends ViewModel {
     }
 
     public void likeTweet(int idTweet){tweetRepository.likeTweet(idTweet);}
+
+    public void openDialogTweetMenu(Context context, int idTweet){
+        BottomModalTweetFragment dialogTweet =  BottomModalTweetFragment.newInstance(idTweet);
+        dialogTweet.show(((AppCompatActivity) context).getSupportFragmentManager(), "BottomModalTweetFragment");
+    }
 }
