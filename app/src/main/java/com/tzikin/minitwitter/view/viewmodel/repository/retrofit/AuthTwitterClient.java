@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.tzikin.minitwitter.view.common.Constants;
 import com.tzikin.minitwitter.view.common.SharedPreferenceManager;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.DeleteTweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Like;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.NewTweet;
@@ -154,6 +155,30 @@ public class AuthTwitterClient {
             @Override
             public void onFailure(Call<Tweet> call, Throwable t) {
                 routeData.setValue(null);
+            }
+        });
+    }
+
+    public void deleteTweet(int idTweet){
+        api.deleteTweet(idTweet).enqueue(new Callback<DeleteTweet>() {
+            @Override
+            public void onResponse(Call<DeleteTweet> call, Response<DeleteTweet> response) {
+                if(response.body() != null){
+                    List<Tweet> clonedList = new ArrayList<>();
+                    for (int i = 0; i < allTweets.getValue().size(); i++){
+                        if(allTweets.getValue().get(i).getId() != idTweet){
+                            clonedList.add(allTweets.getValue().get(i));
+                        }
+                    }
+
+                    allTweets.setValue(clonedList);
+                    getFavsTweets();    //Actualización de favs
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeleteTweet> call, Throwable t) {
+
             }
         });
     }

@@ -41,6 +41,10 @@ public class TweetRepository {
         return instance.getFavsTweets();
     }
 
+    public void deleteTweet(int idTweet){
+        instance.deleteTweet(idTweet);
+    }
+
     public MutableLiveData<List<Tweet>> getAllTweetsResponse() {
         return allTweetsResponse;
     }

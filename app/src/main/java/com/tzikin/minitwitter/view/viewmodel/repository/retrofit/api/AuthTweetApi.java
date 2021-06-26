@@ -1,5 +1,6 @@
 package com.tzikin.minitwitter.view.viewmodel.repository.retrofit.api;
 
+import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.DeleteTweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.NewTweet;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -24,4 +26,9 @@ public interface AuthTweetApi {
 
     @GET("tweets/favs")
     Call<List<Tweet>> getFavTweets();
+
+    @DELETE("tweets/{id}")
+    Call<DeleteTweet> deleteTweet(@Path("id") int idTweet);
+
+
 }
