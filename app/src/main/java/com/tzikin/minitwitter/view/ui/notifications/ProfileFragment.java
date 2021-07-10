@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tzikin.minitwitter.R;
 import com.tzikin.minitwitter.databinding.FragmentProfileBinding;
 import com.tzikin.minitwitter.view.common.Constants;
@@ -52,7 +53,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             binding.edtEmailProfile.setText(response.getEmail());
             binding.edtWebsite.setText(response.getWebsite());
             if(!response.getPhotoURL().isEmpty()){
-                Glide.with(requireActivity()).load(Constants.PHOTO_URL_SERVER + response.getPhotoURL()).into(binding.imgProfile);
+                Glide.with(requireActivity()).load(Constants.PHOTO_URL_SERVER + response.getPhotoURL())
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .centerCrop()
+                        .skipMemoryCache(true)
+                        .into(binding.imgProfile);
             }
 
             if(!loadingData){

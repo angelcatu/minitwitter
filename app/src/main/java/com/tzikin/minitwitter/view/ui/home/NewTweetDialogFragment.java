@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tzikin.minitwitter.R;
 import com.tzikin.minitwitter.databinding.NewTweetDialogBinding;
 import com.tzikin.minitwitter.view.common.Constants;
@@ -49,7 +50,12 @@ public class NewTweetDialogFragment extends DialogFragment implements View.OnCli
         // Update profile image
         String photoURL = SharedPreferenceManager.getSomeStringValue(Constants.PREF_PHOTO_URL);
         if (!photoURL.isEmpty())
-            Glide.with(requireActivity()).load(Constants.PHOTO_URL_SERVER + photoURL).into(binding.imgProfileTweet);
+            Glide.with(requireActivity()).load(Constants.PHOTO_URL_SERVER + photoURL)
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .centerCrop()
+                    .skipMemoryCache(true)
+                    .into(binding.imgProfileTweet);
     }
 
     private void bindUIElements() {
