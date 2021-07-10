@@ -21,6 +21,13 @@ public class UpdateProfileRequest {
     @Expose
     private String website;
 
+    public UpdateProfileRequest(String username, String email, String description, String website) {
+        this.username = username;
+        this.email = email;
+        this.description = description;
+        this.website = website;
+    }
+
     public String getUsername() {
         return username;
     }

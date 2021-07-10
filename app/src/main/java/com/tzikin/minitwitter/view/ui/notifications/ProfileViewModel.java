@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.tzikin.minitwitter.view.viewmodel.repository.model.request.UpdateProfileRequest;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.response.ProfileResponse;
 import com.tzikin.minitwitter.view.viewmodel.repository.repositories.ProfileRepository;
 
@@ -15,5 +16,9 @@ public class ProfileViewModel extends ViewModel {
     public ProfileViewModel() {
         profileRepository = new ProfileRepository();
         userProfile = profileRepository.getProfile();
+    }
+
+    public void updateProfile(UpdateProfileRequest request){
+        profileRepository.updateProfile(request);
     }
 }

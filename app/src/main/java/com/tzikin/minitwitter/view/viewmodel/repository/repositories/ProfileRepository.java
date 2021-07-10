@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.tzikin.minitwitter.view.viewmodel.repository.common.MyApp;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.NewTweet;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.request.UpdateProfileRequest;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.response.ProfileResponse;
 import com.tzikin.minitwitter.view.viewmodel.repository.retrofit.AuthTwitterClient;
 import com.tzikin.minitwitter.view.viewmodel.repository.retrofit.api.AuthTweetApi;
@@ -90,6 +91,25 @@ public class ProfileRepository {
             }
         });
 
-        return null;
+        return userProfile;
+    }
+
+    public void updateProfile(UpdateProfileRequest request){
+        Call<ProfileResponse> call = service.updateProfile(request);
+        call.enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if(response.isSuccessful()){
+                    userProfile.setValue(response.body());
+                }else{
+                    Toast.makeText(MyApp.getContext(), "Algo ha ido mal", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                Toast.makeText(MyApp.getContext(), "Error en la conexión", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
