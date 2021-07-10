@@ -31,6 +31,7 @@ public class BottomModalTweetFragment extends BottomSheetDialogFragment {
         BottomModalTweetFragment fragment = new BottomModalTweetFragment();
         Bundle args = new Bundle();
         args.putInt(Constants.ARG_TWEET_ID, idTweet);
+        fragment.setArguments(args);
         return fragment;
     }
 

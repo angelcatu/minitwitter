@@ -98,6 +98,11 @@ public class TweetAdapterJ extends RecyclerView.Adapter<TweetAdapterJ.ViewHolder
                 onLike.onLikeTouchListener(tweet);
             });
 
+            binding.imgShowMenu.setVisibility(View.GONE);
+            if(tweet.getUser().getUsername().equals(username)){
+                binding.imgShowMenu.setVisibility(View.VISIBLE);
+            }
+
             binding.imgShowMenu.setOnClickListener(v -> {
                 onLike.onIdTweetListener(tweet.getId());
             });
