@@ -26,4 +26,6 @@
     <string name="cancel_new_tweet">Cancelar tweet</string>
     <string name="eliminate">Eliminar</string>
     <string name="cancel">Cancelar</string>
+    <string name="websiteHint">Website</string>
+    <string name="interestsHint">Descripción e intereses</string>
 </resources>

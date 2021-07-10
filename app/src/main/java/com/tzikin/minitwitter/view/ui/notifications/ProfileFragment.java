@@ -7,23 +7,27 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.tzikin.minitwitter.R;
 import com.tzikin.minitwitter.databinding.FragmentProfileBinding;
+import com.tzikin.minitwitter.view.common.Constants;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.response.ProfileResponse;
 
 import org.jetbrains.annotations.NotNull;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
-    private NotificationsViewModel notificationsViewModel;
+    private ProfileViewModel profileViewModel;
     private FragmentProfileBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        profileViewModel =
+                new ViewModelProvider(this).get(ProfileViewModel.class);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -35,6 +39,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         binding.btnSaveProfile.setOnClickListener(this);
         binding.btnPasswordUpdate.setOnClickListener(this);
+
+
+        //ViewModel
+        profileViewModel.userProfile.observe(requireActivity(), response -> {
+            binding.edtUsernameProfile.setText(response.getUsername());
+            binding.edtEmailProfile.setText(response.getEmail());
+            binding.edtWebsite.setText(response.getWebsite());
+            if(!response.getPhotoURL().isEmpty()){
+                Glide.with(requireActivity()).load(Constants.PHOTO_URL_SERVER + response.getPhotoURL()).into(binding.imgProfile);
+            }
+        });
+
     }
 
     @Override
