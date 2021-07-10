@@ -3,6 +3,8 @@ package com.tzikin.minitwitter.view.viewmodel.repository.retrofit.api;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.DeleteTweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.entity.Tweet;
 import com.tzikin.minitwitter.view.viewmodel.repository.model.request.NewTweet;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.request.UpdateProfileRequest;
+import com.tzikin.minitwitter.view.viewmodel.repository.model.response.ProfileResponse;
 
 import java.util.List;
 
@@ -11,10 +13,12 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface AuthTweetApi {
 
+    //TWEETS
     @GET("tweets/all")
     Call<List<Tweet>> getAllTweets();
 
@@ -29,6 +33,15 @@ public interface AuthTweetApi {
 
     @DELETE("tweets/{id}")
     Call<DeleteTweet> deleteTweet(@Path("id") int idTweet);
+
+
+
+    //USERS
+    @GET("users/profile")
+    Call<ProfileResponse> getProfile();
+
+    @PUT("users/profile")
+    Call<ProfileResponse> updateProfile(@Body UpdateProfileRequest request);
 
 
 }
