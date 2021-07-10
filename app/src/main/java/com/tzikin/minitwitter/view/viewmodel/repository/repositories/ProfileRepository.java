@@ -31,44 +31,6 @@ public class ProfileRepository {
         userProfile = getProfile();
     }
 
-    private MutableLiveData<List<Tweet>> allTweetsResponse;
-    private MutableLiveData<Tweet> postNewTweet;
-    private MutableLiveData<Tweet> likeTweet;
-
-    public void getAllTweets(){
-        allTweetsResponse = instance.getAllTweets();
-    }
-
-    public void postNewTweet(String message){
-        NewTweet newTweet = new NewTweet(message);
-        instance.postNewTweet(newTweet);
-    }
-
-    public void likeTweet(int idTweet){
-        instance.likeTweet(idTweet);
-    }
-
-    public MutableLiveData<List<Tweet>> favTweets(){
-        return instance.getFavsTweets();
-    }
-
-    public void deleteTweet(int idTweet){
-        instance.deleteTweet(idTweet);
-    }
-
-    public MutableLiveData<List<Tweet>> getAllTweetsResponse() {
-        return allTweetsResponse;
-    }
-
-    public MutableLiveData<Tweet> getPostNewTweet() {
-        return postNewTweet;
-    }
-
-    public MutableLiveData<Tweet> getLikeTweet() {
-        return likeTweet;
-    }
-
-
     public MutableLiveData<ProfileResponse> getProfile(){
         if(userProfile == null){
             userProfile = new MutableLiveData<>();
