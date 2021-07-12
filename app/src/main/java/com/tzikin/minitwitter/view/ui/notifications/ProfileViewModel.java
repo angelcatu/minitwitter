@@ -12,13 +12,19 @@ public class ProfileViewModel extends ViewModel {
 
     private ProfileRepository profileRepository;
     public LiveData<ProfileResponse> userProfile;
+    public LiveData<String> photoProfile;
 
     public ProfileViewModel() {
         profileRepository = new ProfileRepository();
         userProfile = profileRepository.getProfile();
+        photoProfile = profileRepository.getPhotoProfile();
     }
 
     public void updateProfile(UpdateProfileRequest request){
         profileRepository.updateProfile(request);
+    }
+
+    public void uploadPhoto(String photoPath){
+        profileRepository.uploadPhoto(photoPath);
     }
 }

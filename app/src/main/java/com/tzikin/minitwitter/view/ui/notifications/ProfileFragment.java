@@ -1,5 +1,6 @@
 package com.tzikin.minitwitter.view.ui.notifications;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.CompositePermissionListener;
+import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.tzikin.minitwitter.R;
 import com.tzikin.minitwitter.databinding.FragmentProfileBinding;
 import com.tzikin.minitwitter.view.common.Constants;
@@ -26,6 +36,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private ProfileViewModel profileViewModel;
     private FragmentProfileBinding binding;
     private boolean loadingData = true;
+    private PermissionListener allPermissionListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,6 +53,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         binding.btnSaveProfile.setOnClickListener(this);
         binding.btnPasswordUpdate.setOnClickListener(this);
+        binding.imgProfile.setOnClickListener(this);
 
 
         //ViewModel
@@ -52,7 +64,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             binding.edtUsernameProfile.setText(response.getUsername());
             binding.edtEmailProfile.setText(response.getEmail());
             binding.edtWebsite.setText(response.getWebsite());
-            if(!response.getPhotoURL().isEmpty()){
+            if (!response.getPhotoURL().isEmpty()) {
                 Glide.with(requireActivity()).load(Constants.PHOTO_URL_SERVER + response.getPhotoURL())
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -61,12 +73,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         .into(binding.imgProfile);
             }
 
-            if(!loadingData){
+            if (!loadingData) {
                 binding.btnSaveProfile.setEnabled(true);
                 Toast.makeText(requireActivity(), "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
             }
+        });
 
+        profileViewModel.photoProfile.observe(requireActivity(), new Observer<String>() {
+            @Override
+            public void onChanged(String photo) {
+                Glide.with(requireActivity()).load(Constants.PHOTO_URL_SERVER + photo)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .centerCrop()
+                        .skipMemoryCache(true)
+                        .into(binding.imgProfile);
 
+            }
         });
 
     }
@@ -81,7 +104,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
 
-        switch (id){
+        switch (id) {
             case R.id.btnSaveProfile:
 
                 String email = binding.edtEmailProfile.getText().toString();
@@ -90,13 +113,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 String website = binding.edtWebsite.getText().toString();
                 String password = binding.edtPasswordProfile.getText().toString();
 
-                if(username.isEmpty()){
+                if (username.isEmpty()) {
                     binding.edtUsernameProfile.setError("El nombre de usuario es requerido");
-                }else if(email.isEmpty()){
+                } else if (email.isEmpty()) {
                     binding.edtEmailProfile.setError("El email es requerido");
-                }else if(password.isEmpty()){
+                } else if (password.isEmpty()) {
                     binding.edtPasswordProfile.setError("La contraseña es requerida");
-                }else{
+                } else {
                     UpdateProfileRequest request = new UpdateProfileRequest(username, email, description, website);
                     profileViewModel.updateProfile(request);
                     Toast.makeText(requireActivity(), "Enviando información al servidor...", Toast.LENGTH_SHORT).show();
@@ -107,6 +130,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
             case R.id.btnPasswordUpdate:
                 break;
+
+            case R.id.imgProfile:
+                checkPermissions();
+                break;
         }
+    }
+
+    private void checkPermissions() {
+        PermissionListener dialogOnDeniedPermissionListener = DialogOnDeniedPermissionListener.Builder
+                .withContext(requireActivity())
+                .withTitle("Permisos")
+                .withMessage("Los permisos solicitados son necesarios para seleccionar una foto de perfil")
+                .withButtonText("Aceptar")
+                .withIcon(R.mipmap.ic_launcher)
+                .build();
+
+        allPermissionListener = new CompositePermissionListener((PermissionListener) requireActivity(), dialogOnDeniedPermissionListener);
+
+        Dexter.withContext(requireActivity())
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(allPermissionListener)
+                .check();
+
     }
 }
